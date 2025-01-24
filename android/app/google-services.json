@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "930111169941",
+    "project_id": "e-commerce-e76c2",
+    "storage_bucket": "e-commerce-e76c2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930111169941:android:9dd7dacf28732719bd829c",
+        "android_client_info": {
+          "package_name": "com.sixamtech.sixvalley"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcIVJB7V1hWWKGG28fj6BO0S76OUq5lFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,32 @@
+// Top-level build.gradle (Project-level configuration)
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Update to match your Gradle plugin version
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.google.gms:google-services:4.3.15' // Firebase services
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'  // Defines where to build artifacts
+
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}" // Specifies subproject build dirs
+    project.evaluationDependsOn(':app') // Ensures the :app project is evaluated before others
+}
+
+// Register a task to clean build directories
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
