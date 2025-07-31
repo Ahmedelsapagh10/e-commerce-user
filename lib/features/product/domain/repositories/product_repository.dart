@@ -1,53 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/dio/dio_client.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/exception/api_error_handler.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/api_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/product/domain/repositories/product_repository_interface.dart';
-import 'package:flutter_sixvalley_ecommerce/features/product/enums/product_type.dart';
-import 'package:flutter_sixvalley_ecommerce/localization/language_constrants.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/data/datasource/remote/dio/dio_client.dart';
+import 'package:mstore/data/datasource/remote/exception/api_error_handler.dart';
+import 'package:mstore/data/model/api_response.dart';
+import 'package:mstore/features/product/domain/repositories/product_repository_interface.dart';
+import 'package:mstore/features/product/enums/product_type.dart';
+import 'package:mstore/localization/language_constrants.dart';
+import 'package:mstore/utill/app_constants.dart';
 
-class ProductRepository implements ProductRepositoryInterface{
+class ProductRepository implements ProductRepositoryInterface {
   final DioClient? dioClient;
   ProductRepository({required this.dioClient});
 
   @override
-  Future<ApiResponse> getFilteredProductList(BuildContext context, String offset, ProductType productType, String? title) async {
+  Future<ApiResponse> getFilteredProductList(BuildContext context,
+      String offset, ProductType productType, String? title) async {
     late String endUrl;
 
-     if(productType == ProductType.bestSelling){
+    if (productType == ProductType.bestSelling) {
       endUrl = AppConstants.bestSellingProductUri;
       title = getTranslated('best_selling', context);
-    }
-    else if(productType == ProductType.newArrival){
+    } else if (productType == ProductType.newArrival) {
       endUrl = AppConstants.newArrivalProductUri;
-      title = getTranslated('new_arrival',context);
-    }
-    else if(productType == ProductType.topProduct){
+      title = getTranslated('new_arrival', context);
+    } else if (productType == ProductType.topProduct) {
       endUrl = AppConstants.topProductUri;
       title = getTranslated('top_product', context);
-    }else if(productType == ProductType.discountedProduct){
-       endUrl = AppConstants.discountedProductUri;
-       title = getTranslated('discounted_product', context);
-     }
+    } else if (productType == ProductType.discountedProduct) {
+      endUrl = AppConstants.discountedProductUri;
+      title = getTranslated('discounted_product', context);
+    }
     try {
-      final response = await dioClient!.get(
-        endUrl+offset);
+      final response = await dioClient!.get(endUrl + offset);
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
 
-
-
   @override
-  Future<ApiResponse> getBrandOrCategoryProductList(bool isBrand, String id) async {
+  Future<ApiResponse> getBrandOrCategoryProductList(
+      bool isBrand, String id) async {
     try {
       String uri;
-      if(isBrand){
+      if (isBrand) {
         uri = '${AppConstants.brandProductUri}$id?guest_id=1';
-      }else {
+      } else {
         uri = '${AppConstants.categoryProductUri}$id?guest_id=1';
       }
       final response = await dioClient!.get(uri);
@@ -57,37 +54,35 @@ class ProductRepository implements ProductRepositoryInterface{
     }
   }
 
-
-
   @override
   Future<ApiResponse> getRelatedProductList(String id) async {
     try {
-      final response = await dioClient!.get('${AppConstants.relatedProductUri}$id?guest_id=1');
+      final response = await dioClient!
+          .get('${AppConstants.relatedProductUri}$id?guest_id=1');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
-
 
   @override
   Future<ApiResponse> getFeaturedProductList(String offset) async {
     try {
       final response = await dioClient!.get(
-        AppConstants.featuredProductUri+offset,);
+        AppConstants.featuredProductUri + offset,
+      );
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
 
-
-
   @override
   Future<ApiResponse> getLatestProductList(String offset) async {
     try {
       final response = await dioClient!.get(
-        AppConstants.latestProductUri+offset,);
+        AppConstants.latestProductUri + offset,
+      );
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -114,7 +109,6 @@ class ProductRepository implements ProductRepositoryInterface{
     }
   }
 
-
   @override
   Future<ApiResponse> getFindWhatYouNeed() async {
     try {
@@ -138,7 +132,8 @@ class ProductRepository implements ProductRepositoryInterface{
   @override
   Future<ApiResponse> getMostSearchingProductList(int offset) async {
     try {
-      final response = await dioClient!.get("${AppConstants.mostSearching}?guest_id=1&limit=10&offset=$offset");
+      final response = await dioClient!.get(
+          "${AppConstants.mostSearching}?guest_id=1&limit=10&offset=$offset");
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -148,7 +143,8 @@ class ProductRepository implements ProductRepositoryInterface{
   @override
   Future<ApiResponse> getHomeCategoryProductList() async {
     try {
-      final response = await dioClient!.get(AppConstants.homeCategoryProductUri);
+      final response =
+          await dioClient!.get(AppConstants.homeCategoryProductUri);
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -173,19 +169,15 @@ class ProductRepository implements ProductRepositoryInterface{
     throw UnimplementedError();
   }
 
-
-
   @override
   Future getList({int? offset = 1}) {
     // TODO: implement getList
     throw UnimplementedError();
   }
 
-
   @override
   Future update(Map<String, dynamic> body, int id) {
     // TODO: implement update
     throw UnimplementedError();
   }
-
 }

@@ -1,50 +1,61 @@
-
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/dio/dio_client.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/exception/api_error_handler.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/api_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/search_product/domain/repositories/search_product_repository_interface.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/data/datasource/remote/dio/dio_client.dart';
+import 'package:mstore/data/datasource/remote/exception/api_error_handler.dart';
+import 'package:mstore/data/model/api_response.dart';
+import 'package:mstore/features/search_product/domain/repositories/search_product_repository_interface.dart';
+import 'package:mstore/utill/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SearchProductRepository implements SearchProductRepositoryInterface{
+class SearchProductRepository implements SearchProductRepositoryInterface {
   final DioClient? dioClient;
   final SharedPreferences? sharedPreferences;
-  SearchProductRepository({required this.dioClient, required this.sharedPreferences});
+  SearchProductRepository(
+      {required this.dioClient, required this.sharedPreferences});
 
   @override
-  Future<ApiResponse> getSearchProductList(String query, String? categoryIds, String? brandIds, String? authorIds, String? publishingIds, String? sort, String? priceMin, String? priceMax, int offset, String? productType) async {
-    Map<dynamic, dynamic> data = {'search' : base64.encode(utf8.encode(query)),
-      'category': categoryIds??'[]',
-      'brand' : brandIds??'[]',
-      'product_authors' : authorIds ?? '[]',
-      'publishing_houses' : publishingIds ?? '[]',
+  Future<ApiResponse> getSearchProductList(
+      String query,
+      String? categoryIds,
+      String? brandIds,
+      String? authorIds,
+      String? publishingIds,
+      String? sort,
+      String? priceMin,
+      String? priceMax,
+      int offset,
+      String? productType) async {
+    Map<dynamic, dynamic> data = {
+      'search': base64.encode(utf8.encode(query)),
+      'category': categoryIds ?? '[]',
+      'brand': brandIds ?? '[]',
+      'product_authors': authorIds ?? '[]',
+      'publishing_houses': publishingIds ?? '[]',
       'sort_by': sort,
-      'price_min' : priceMin,
-      'price_max' : priceMax,
-      'limit' : '20',
-      'offset' : offset,
-      'guest_id' : '1',
-      'product_type' : productType ?? 'all',
+      'price_min': priceMin,
+      'price_max': priceMax,
+      'limit': '20',
+      'offset': offset,
+      'guest_id': '1',
+      'product_type': productType ?? 'all',
     };
 
     print('===SearchData===>>${data}');
     try {
-      log("===limit==>" );
-      final response = await dioClient!.post(AppConstants.searchUri,
-          data: {'search' : base64.encode(utf8.encode(query)),
-            'category': categoryIds??'[]',
-            'brand' : brandIds??'[]',
-            'product_authors' : authorIds ?? '[]',
-            'publishing_houses' : publishingIds ?? '[]',
-            'sort_by': sort,
-            'price_min' : priceMin,
-            'price_max' : priceMax,
-            'limit' : '20',
-            'offset' : offset,
-            'guest_id' : '1',
-            'product_type' : productType ?? 'all',
+      log("===limit==>");
+      final response = await dioClient!.post(AppConstants.searchUri, data: {
+        'search': base64.encode(utf8.encode(query)),
+        'category': categoryIds ?? '[]',
+        'brand': brandIds ?? '[]',
+        'product_authors': authorIds ?? '[]',
+        'publishing_houses': publishingIds ?? '[]',
+        'sort_by': sort,
+        'price_min': priceMin,
+        'price_max': priceMax,
+        'limit': '20',
+        'offset': offset,
+        'guest_id': '1',
+        'product_type': productType ?? 'all',
       });
       return ApiResponse.withSuccess(response);
     } catch (e) {
@@ -52,26 +63,28 @@ class SearchProductRepository implements SearchProductRepositoryInterface{
     }
   }
 
-
   @override
   Future<ApiResponse> getSearchProductName(String name) async {
     try {
-      final response = await dioClient!.get('${AppConstants.getSuggestionProductName}$name&limit=10&&offset=1');
+      final response = await dioClient!.get(
+          '${AppConstants.getSuggestionProductName}$name&limit=10&&offset=1');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
 
-
   @override
   Future<void> saveSearchProductName(String searchAddress) async {
     try {
-      List<String> searchKeywordList = sharedPreferences!.getStringList(AppConstants.searchProductName)??[];
+      List<String> searchKeywordList =
+          sharedPreferences!.getStringList(AppConstants.searchProductName) ??
+              [];
       if (!searchKeywordList.contains(searchAddress)) {
         searchKeywordList.add(searchAddress);
       }
-      await sharedPreferences!.setStringList(AppConstants.searchProductName, searchKeywordList);
+      await sharedPreferences!
+          .setStringList(AppConstants.searchProductName, searchKeywordList);
     } catch (e) {
       rethrow;
     }
@@ -79,7 +92,8 @@ class SearchProductRepository implements SearchProductRepositoryInterface{
 
   @override
   List<String> getSavedSearchProductName() {
-    return sharedPreferences!.getStringList(AppConstants.searchProductName) ?? [];
+    return sharedPreferences!.getStringList(AppConstants.searchProductName) ??
+        [];
   }
 
   @override
@@ -117,11 +131,11 @@ class SearchProductRepository implements SearchProductRepositoryInterface{
     throw UnimplementedError();
   }
 
-
   @override
   Future<ApiResponse> getAuthorList(int? sellerId) async {
     try {
-      final response = await dioClient!.get('${AppConstants.getDigitalAuthorList}&seller_id=$sellerId');
+      final response = await dioClient!
+          .get('${AppConstants.getDigitalAuthorList}&seller_id=$sellerId');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -131,7 +145,8 @@ class SearchProductRepository implements SearchProductRepositoryInterface{
   @override
   Future<ApiResponse> getPublishingHouse(int? sellerId) async {
     try {
-      final response = await dioClient!.get('${AppConstants.getDigitalPublishingHouse}&seller_id=$sellerId');
+      final response = await dioClient!
+          .get('${AppConstants.getDigitalPublishingHouse}&seller_id=$sellerId');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));

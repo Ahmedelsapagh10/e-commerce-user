@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sixvalley_ecommerce/common/basewidget/custom_image_widget.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/custom_themes.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/dimensions.dart';
+import 'package:mstore/common/basewidget/custom_image_widget.dart';
+import 'package:mstore/utill/custom_themes.dart';
+import 'package:mstore/utill/dimensions.dart';
 
 class ImagePreview extends StatefulWidget {
   final String url;
@@ -13,7 +13,6 @@ class ImagePreview extends StatefulWidget {
 }
 
 class _ImagePreviewState extends State<ImagePreview> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,31 +21,34 @@ class _ImagePreviewState extends State<ImagePreview> {
       padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
       decoration: BoxDecoration(
           color: Theme.of(context).hintColor.withOpacity(0.50),
-          borderRadius: BorderRadius.circular(Dimensions.radiusDefault)
-      ),
+          borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
       child: Column(
         children: [
           Row(
             children: [
               Expanded(
                 child: Text(widget.fileName,
-                    style: titilliumSemiBold.copyWith(fontSize: Dimensions.fontSizeLarge), maxLines: 1, overflow: TextOverflow.ellipsis),
+                    style: titilliumSemiBold.copyWith(
+                        fontSize: Dimensions.fontSizeLarge),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis),
               ),
               const SizedBox(width: Dimensions.paddingSizeSmall),
-
-
               SizedBox(
-                  height: 20, width: 20,
+                  height: 20,
+                  width: 20,
                   child: IconButton(
                       padding: EdgeInsets.zero,
-                      onPressed: ()=> Navigator.of(context, rootNavigator: true).pop(),
-                      icon: Icon(Icons.close, color: Theme.of(context).hintColor, size: 20,)
-                  )
-              ),
+                      onPressed: () =>
+                          Navigator.of(context, rootNavigator: true).pop(),
+                      icon: Icon(
+                        Icons.close,
+                        color: Theme.of(context).hintColor,
+                        size: 20,
+                      ))),
             ],
           ),
           const SizedBox(height: Dimensions.paddingSizeDefault),
-
           Expanded(
             child: CustomImageWidget(
               image: widget.url,

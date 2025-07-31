@@ -1,4 +1,4 @@
-import 'package:flutter_sixvalley_ecommerce/data/model/image_full_url.dart';
+import 'package:mstore/data/model/image_full_url.dart';
 
 class WishlistModel {
   int? id;
@@ -10,11 +10,11 @@ class WishlistModel {
 
   WishlistModel(
       {this.id,
-        this.customerId,
-        this.productId,
-        this.createdAt,
-        this.updatedAt,
-        this.productFullInfo});
+      this.customerId,
+      this.productId,
+      this.createdAt,
+      this.updatedAt,
+      this.productFullInfo});
 
   WishlistModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -22,10 +22,10 @@ class WishlistModel {
     productId = json['product_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    productFullInfo = json['product_full_info'] != null ? ProductFullInfo.fromJson(json['product_full_info']) : null;
+    productFullInfo = json['product_full_info'] != null
+        ? ProductFullInfo.fromJson(json['product_full_info'])
+        : null;
   }
-
-
 }
 
 class ProductFullInfo {
@@ -76,53 +76,52 @@ class ProductFullInfo {
   String? code;
   int? reviewsCount;
 
-
-  ProductFullInfo(
-      {this.id,
-        this.addedBy,
-        this.userId,
-        this.name,
-        this.slug,
-        this.productType,
-        this.brandId,
-        this.unit,
-        this.minQty,
-        this.refundable,
-        this.colorImage,
-        this.thumbnail,
-        this.thumbnailFullUrl,
-        this.featured,
-        this.videoProvider,
-        this.colors,
-        this.variantProduct,
-        this.attributes,
-        this.choiceOptions,
-        this.variation,
-        this.published,
-        this.unitPrice,
-        this.purchasePrice,
-        this.tax,
-        this.taxType,
-        this.taxModel,
-        this.discount,
-        this.discountType,
-        this.currentStock,
-        this.minimumOrderQty,
-        this.details,
-        this.freeShipping,
-        this.createdAt,
-        this.updatedAt,
-        this.status,
-        this.featuredStatus,
-        this.metaTitle,
-        this.metaDescription,
-        this.metaImage,
-        this.requestStatus,
-        this.shippingCost,
-        this.multiplyQty,
-        this.code,
-        this.reviewsCount,
-        });
+  ProductFullInfo({
+    this.id,
+    this.addedBy,
+    this.userId,
+    this.name,
+    this.slug,
+    this.productType,
+    this.brandId,
+    this.unit,
+    this.minQty,
+    this.refundable,
+    this.colorImage,
+    this.thumbnail,
+    this.thumbnailFullUrl,
+    this.featured,
+    this.videoProvider,
+    this.colors,
+    this.variantProduct,
+    this.attributes,
+    this.choiceOptions,
+    this.variation,
+    this.published,
+    this.unitPrice,
+    this.purchasePrice,
+    this.tax,
+    this.taxType,
+    this.taxModel,
+    this.discount,
+    this.discountType,
+    this.currentStock,
+    this.minimumOrderQty,
+    this.details,
+    this.freeShipping,
+    this.createdAt,
+    this.updatedAt,
+    this.status,
+    this.featuredStatus,
+    this.metaTitle,
+    this.metaDescription,
+    this.metaImage,
+    this.requestStatus,
+    this.shippingCost,
+    this.multiplyQty,
+    this.code,
+    this.reviewsCount,
+  });
 
   ProductFullInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -167,14 +166,13 @@ class ProductFullInfo {
     shippingCost = double.parse(json['shipping_cost'].toString());
     multiplyQty = json['multiply_qty'];
     code = json['code'];
-    if(json['reviews_count'] != null){
+    if (json['reviews_count'] != null) {
       reviewsCount = int.parse(json['reviews_count'].toString());
-    }else{
+    } else {
       reviewsCount = 0;
     }
     thumbnailFullUrl = json['thumbnail_full_url'] != null
         ? ImageFullUrl.fromJson(json['thumbnail_full_url'])
         : null;
   }
-
 }

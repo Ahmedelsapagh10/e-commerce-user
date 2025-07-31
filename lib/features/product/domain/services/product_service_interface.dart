@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sixvalley_ecommerce/features/product/enums/product_type.dart';
+import 'package:mstore/features/product/enums/product_type.dart';
 
-abstract class ProductServiceInterface{
-  Future<dynamic> getFilteredProductList(BuildContext context,String offset, ProductType productType, String? title);
+abstract class ProductServiceInterface {
+  Future<dynamic> getFilteredProductList(BuildContext context, String offset,
+      ProductType productType, String? title);
   Future<dynamic> getBrandOrCategoryProductList(bool isBrand, String id);
   Future<dynamic> getRelatedProductList(String id);
   Future<dynamic> getFeaturedProductList(String offset);

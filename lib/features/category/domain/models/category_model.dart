@@ -1,4 +1,4 @@
-import 'package:flutter_sixvalley_ecommerce/data/model/image_full_url.dart';
+import 'package:mstore/data/model/image_full_url.dart';
 
 class CategoryModel {
   int? _id;
@@ -15,17 +15,16 @@ class CategoryModel {
 
   CategoryModel(
       {int? id,
-        String? name,
-        String? slug,
-        String? icon,
-        int? parentId,
-        int? position,
-        String? createdAt,
-        String? updatedAt,
-        List<SubCategory>? subCategories,
-        bool? isSelected,
-        ImageFullUrl? imageFullUrl
-      }) {
+      String? name,
+      String? slug,
+      String? icon,
+      int? parentId,
+      int? position,
+      String? createdAt,
+      String? updatedAt,
+      List<SubCategory>? subCategories,
+      bool? isSelected,
+      ImageFullUrl? imageFullUrl}) {
     _id = id;
     _name = name;
     _slug = slug;
@@ -70,7 +69,6 @@ class CategoryModel {
         : null;
     isSelected = false;
   }
-
 }
 
 class SubCategory {
@@ -85,18 +83,18 @@ class SubCategory {
   List<SubSubCategory>? _subSubCategories;
   bool? isSelected;
 
-  SubCategory(
-      {int? id,
-        String? name,
-        String? slug,
-        String? icon,
-        int? parentId,
-        int? position,
-        String? createdAt,
-        String? updatedAt,
-        List<SubSubCategory>? subSubCategories,
-        bool? isSelected,
-      }) {
+  SubCategory({
+    int? id,
+    String? name,
+    String? slug,
+    String? icon,
+    int? parentId,
+    int? position,
+    String? createdAt,
+    String? updatedAt,
+    List<SubSubCategory>? subSubCategories,
+    bool? isSelected,
+  }) {
     _id = id;
     _name = name;
     _slug = slug;
@@ -136,7 +134,6 @@ class SubCategory {
     }
     isSelected = false;
   }
-
 }
 
 class SubSubCategory {
@@ -151,13 +148,13 @@ class SubSubCategory {
 
   SubSubCategory(
       {int? id,
-        String? name,
-        String? slug,
-        String? icon,
-        int? parentId,
-        int? position,
-        String? createdAt,
-        String? updatedAt}) {
+      String? name,
+      String? slug,
+      String? icon,
+      int? parentId,
+      int? position,
+      String? createdAt,
+      String? updatedAt}) {
     _id = id;
     _name = name;
     _slug = slug;
@@ -187,5 +184,4 @@ class SubSubCategory {
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
   }
-
 }

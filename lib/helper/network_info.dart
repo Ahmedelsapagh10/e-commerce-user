@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sixvalley_ecommerce/features/splash/controllers/splash_controller.dart';
-import 'package:flutter_sixvalley_ecommerce/localization/language_constrants.dart';
-import 'package:flutter_sixvalley_ecommerce/main.dart';
+import 'package:mstore/features/splash/controllers/splash_controller.dart';
+import 'package:mstore/localization/language_constrants.dart';
+import 'package:mstore/main.dart';
 import 'package:provider/provider.dart';
 
 // class NetworkInfo {
@@ -87,7 +87,8 @@ class NetworkInfo {
   /// Additional internet check is performed to be more sure about
   /// the connectivity.
   ///
-/*******  a141a881-bb2a-48dc-9db4-07e80d0962e8  *******/  static void checkConnectivity(BuildContext context) {
+/*******  a141a881-bb2a-48dc-9db4-07e80d0962e8  *******/ static void
+      checkConnectivity(BuildContext context) {
     bool firstTime = true;
 
     Connectivity()

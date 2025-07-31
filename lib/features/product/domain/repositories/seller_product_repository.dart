@@ -1,19 +1,25 @@
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/dio/dio_client.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/exception/api_error_handler.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/api_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/product/domain/repositories/seller_product_repository_interface.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/data/datasource/remote/dio/dio_client.dart';
+import 'package:mstore/data/datasource/remote/exception/api_error_handler.dart';
+import 'package:mstore/data/model/api_response.dart';
+import 'package:mstore/features/product/domain/repositories/seller_product_repository_interface.dart';
+import 'package:mstore/utill/app_constants.dart';
 
-class SellerProductRepository implements SellerProductRepositoryInterface{
+class SellerProductRepository implements SellerProductRepositoryInterface {
   final DioClient? dioClient;
   SellerProductRepository({required this.dioClient});
 
-
   @override
-  Future<ApiResponse> getSellerProductList(String sellerId, String offset, String productId, {String search = '', String? categoryIds="[]", String? brandIds="[]", String? authorIds ='[]', String? publishingIds = '[]', String? productType}) async {
+  Future<ApiResponse> getSellerProductList(
+      String sellerId, String offset, String productId,
+      {String search = '',
+      String? categoryIds = "[]",
+      String? brandIds = "[]",
+      String? authorIds = '[]',
+      String? publishingIds = '[]',
+      String? productType}) async {
     try {
       final response = await dioClient!.get(
-        '${AppConstants.sellerProductUri}$sellerId/products?guest_id=1&limit=10&offset=$offset&search=$search&category=$categoryIds&brand_ids=$brandIds&product_id=$productId&product_authors=$authorIds&publishing_houses=$publishingIds&product_type=$productType');
+          '${AppConstants.sellerProductUri}$sellerId/products?guest_id=1&limit=10&offset=$offset&search=$search&category=$categoryIds&brand_ids=$brandIds&product_id=$productId&product_authors=$authorIds&publishing_houses=$publishingIds&product_type=$productType');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -21,7 +27,8 @@ class SellerProductRepository implements SellerProductRepositoryInterface{
   }
 
   @override
-  Future<ApiResponse> getSellerWiseBestSellingProductList(String sellerId, String offset) async {
+  Future<ApiResponse> getSellerWiseBestSellingProductList(
+      String sellerId, String offset) async {
     try {
       final response = await dioClient!.get(
           '${AppConstants.sellerWiseBestSellingProduct}$sellerId/seller-best-selling-products?guest_id=1&limit=10&offset=$offset');
@@ -32,7 +39,8 @@ class SellerProductRepository implements SellerProductRepositoryInterface{
   }
 
   @override
-  Future<ApiResponse> getSellerWiseFeaturedProductList(String sellerId, String offset) async {
+  Future<ApiResponse> getSellerWiseFeaturedProductList(
+      String sellerId, String offset) async {
     try {
       final response = await dioClient!.get(
           '${AppConstants.sellerWiseBestSellingProduct}$sellerId/seller-featured-product?guest_id=1&limit=10&offset=$offset');
@@ -42,9 +50,9 @@ class SellerProductRepository implements SellerProductRepositoryInterface{
     }
   }
 
-
   @override
-  Future<ApiResponse> getSellerWiseRecomendedProductList(String sellerId, String offset) async {
+  Future<ApiResponse> getSellerWiseRecomendedProductList(
+      String sellerId, String offset) async {
     try {
       final response = await dioClient!.get(
           '${AppConstants.sellerWiseBestSellingProduct}$sellerId/seller-recommended-products?guest_id=1&limit=10&offset=$offset');
@@ -54,11 +62,11 @@ class SellerProductRepository implements SellerProductRepositoryInterface{
     }
   }
 
-
   @override
   Future<ApiResponse> getShopAgainFromRecentStoreList() async {
     try {
-      final response = await dioClient!.get(AppConstants.shopAgainFromRecentStore);
+      final response =
+          await dioClient!.get(AppConstants.shopAgainFromRecentStore);
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -94,5 +102,4 @@ class SellerProductRepository implements SellerProductRepositoryInterface{
     // TODO: implement update
     throw UnimplementedError();
   }
-
 }

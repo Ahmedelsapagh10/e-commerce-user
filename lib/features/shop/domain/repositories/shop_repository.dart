@@ -1,22 +1,24 @@
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/dio/dio_client.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/exception/api_error_handler.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/api_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/shop/domain/repositories/shop_repository_interface.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/data/datasource/remote/dio/dio_client.dart';
+import 'package:mstore/data/datasource/remote/exception/api_error_handler.dart';
+import 'package:mstore/data/model/api_response.dart';
+import 'package:mstore/features/shop/domain/repositories/shop_repository_interface.dart';
+import 'package:mstore/utill/app_constants.dart';
 
-class ShopRepository implements ShopRepositoryInterface{
+class ShopRepository implements ShopRepositoryInterface {
   final DioClient? dioClient;
   ShopRepository({required this.dioClient});
 
   @override
   Future<ApiResponse> get(String sellerId) async {
     try {
-      final response = await dioClient!.get("${AppConstants.sellerUri}$sellerId");
+      final response =
+          await dioClient!.get("${AppConstants.sellerUri}$sellerId");
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
+
   @override
   Future<ApiResponse> getMoreStore() async {
     try {
@@ -27,11 +29,11 @@ class ShopRepository implements ShopRepositoryInterface{
     }
   }
 
-
   @override
   Future<ApiResponse> getSellerList(String type, int offset) async {
     try {
-      final response = await dioClient!.get("${AppConstants.sellerList}$type?limit=10&offset=$offset");
+      final response = await dioClient!
+          .get("${AppConstants.sellerList}$type?limit=10&offset=$offset");
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -61,5 +63,4 @@ class ShopRepository implements ShopRepositoryInterface{
     // TODO: implement update
     throw UnimplementedError();
   }
-
 }

@@ -1,5 +1,5 @@
-import 'package:flutter_sixvalley_ecommerce/localization/language_constrants.dart';
-import 'package:flutter_sixvalley_ecommerce/main.dart';
+import 'package:mstore/localization/language_constrants.dart';
+import 'package:mstore/main.dart';
 import 'package:intl/intl.dart';
 
 class DateConverter {
@@ -14,12 +14,15 @@ class DateConverter {
   static DateTime convertStringToDatetime(String dateTime) {
     return DateFormat("yyyy-MM-dd hh:mm:ss").parse(dateTime);
   }
-  static String dateStringMonthYear(DateTime ? dateTime) {
+
+  static String dateStringMonthYear(DateTime? dateTime) {
     return DateFormat('d MMM,y').format(dateTime!);
   }
 
   static DateTime isoStringToLocalDate(String dateTime) {
-    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').parse(dateTime,true).toLocal();
+    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS')
+        .parse(dateTime, true)
+        .toLocal();
   }
 
   static String localDateToIsoStringAMPM(DateTime dateTime) {
@@ -47,45 +50,58 @@ class DateConverter {
   }
 
   static String isoStringToLocalDateAndTime(String dateTime) {
-    return DateFormat('dd-MMM-yyyy hh:mm a').format(isoStringToLocalDate(dateTime));
+    return DateFormat('dd-MMM-yyyy hh:mm a')
+        .format(isoStringToLocalDate(dateTime));
   }
 
   static String isoStringToLocalDateAndTimeConversation(String dateTime) {
-    return DateFormat('dd MMM yyyy \'at\' ${_timeFormatter()}').format(isoUtcStringToLocalDate(dateTime));
+    return DateFormat('dd MMM yyyy \'at\' ${_timeFormatter()}')
+        .format(isoUtcStringToLocalDate(dateTime));
   }
 
   static DateTime isoUtcStringToLocalDate(String dateTime) {
-    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').parse(dateTime, true).toLocal();
+    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS')
+        .parse(dateTime, true)
+        .toLocal();
   }
 
   static String dateFormatForWalletBonus(String dateTime) {
     return DateFormat('dd MMM, yyyy').format(isoStringToLocalDate(dateTime));
   }
+
   static String dateTimeStringToDateTime(String dateTime) {
-    return DateFormat('dd MMM, yyyy').format(DateFormat('yyyy-MM-ddTHH:mm:ss').parse(dateTime));
+    return DateFormat('dd MMM, yyyy')
+        .format(DateFormat('yyyy-MM-ddTHH:mm:ss').parse(dateTime));
   }
 
   static String dateTimeStringToDateAndTime(String dateTime) {
-    return DateFormat('hh:mm a, dd MMM yyyy').format(DateFormat('yyyy-MM-ddTHH:mm:ss').parse(dateTime));
+    return DateFormat('hh:mm a, dd MMM yyyy')
+        .format(DateFormat('yyyy-MM-ddTHH:mm:ss').parse(dateTime));
   }
 
   static String dateTimeStringToMonthDateAndTime(String dateTime) {
-    return DateFormat('MMMM d, yyyy').format(DateFormat('yyyy-MM-ddTHH:mm:ss').parse(dateTime));
+    return DateFormat('MMMM d, yyyy')
+        .format(DateFormat('yyyy-MM-ddTHH:mm:ss').parse(dateTime));
   }
 
   static String refundDateTime(String dateTime) {
-    return DateFormat('dd MMM yyyy').format(DateFormat('yyyy-MM-ddTHH:mm:ss').parse(dateTime));
+    return DateFormat('dd MMM yyyy')
+        .format(DateFormat('yyyy-MM-ddTHH:mm:ss').parse(dateTime));
   }
 
   static String estimatedDateYear(DateTime dateTime) {
     return DateFormat('dd-MM-yyyy').format(dateTime);
   }
+
   static String inboxLocalDateToIsoStringAMPM(DateTime dateTime) {
-    return DateFormat('${_timeFormatter()} | dd-MMM-yyyy ').format(dateTime.toLocal());
+    return DateFormat('${_timeFormatter()} | dd-MMM-yyyy ')
+        .format(dateTime.toLocal());
   }
 
   static DateTime isoUtcStringToLocalTimeOnly(String dateTime) {
-    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').parse(dateTime, true).toLocal();
+    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS')
+        .parse(dateTime, true)
+        .toLocal();
   }
 
   static String convertStringTimeToDate(DateTime time) {
@@ -96,19 +112,18 @@ class DateConverter {
     return DateFormat('EEE \'at\' ${_timeFormatter()}').format(time.toLocal());
   }
 
-  static String convert24HourTimeTo12HourTimeWithDay(DateTime time, bool isToday) {
-    if(isToday){
+  static String convert24HourTimeTo12HourTimeWithDay(
+      DateTime time, bool isToday) {
+    if (isToday) {
       return DateFormat('\'Today at\' ${_timeFormatter()}').format(time);
-    }else{
+    } else {
       return DateFormat('\'Yesterday at\' ${_timeFormatter()}').format(time);
     }
-
   }
 
   static String convert24HourTimeTo12HourTime(DateTime time) {
     return DateFormat(_timeFormatter()).format(time);
   }
-
 
   static String _timeFormatter() {
     return '24';
@@ -125,18 +140,21 @@ class DateConverter {
 
     String roughTimeString = DateFormat('jm').format(dateTime);
 
-    if (localDateTime.day == now.day && localDateTime.month == now.month && localDateTime.year == now.year) {
+    if (localDateTime.day == now.day &&
+        localDateTime.month == now.month &&
+        localDateTime.year == now.year) {
       return roughTimeString;
     }
 
     DateTime yesterday = now.subtract(const Duration(days: 1));
 
-    if (localDateTime.day == yesterday.day && localDateTime.month == now.month && localDateTime.year == now.year) {
+    if (localDateTime.day == yesterday.day &&
+        localDateTime.month == now.month &&
+        localDateTime.year == now.year) {
       return 'yesterday';
     }
 
     if (now.difference(localDateTime).inDays < 4) {
-
       String weekday = DateFormat('EEEE').format(dateTime.toLocal());
 
       return weekday;
@@ -166,7 +184,7 @@ class DateConverter {
     }
   }
 
-  static int countDays(DateTime ? dateTime) {
+  static int countDays(DateTime? dateTime) {
     final startDate = dateTime!;
     final endDate = DateTime.now();
     final difference = endDate.difference(startDate).inDays;

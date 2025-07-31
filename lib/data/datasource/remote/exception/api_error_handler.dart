@@ -1,8 +1,7 @@
-
 import 'package:dio/dio.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/error_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/auth/controllers/auth_controller.dart';
-import 'package:flutter_sixvalley_ecommerce/main.dart';
+import 'package:mstore/data/model/error_response.dart';
+import 'package:mstore/features/auth/controllers/auth_controller.dart';
+import 'package:mstore/main.dart';
 import 'package:provider/provider.dart';
 
 class ApiErrorHandler {
@@ -22,37 +21,41 @@ class ApiErrorHandler {
               errorDescription = "Send timeout";
               break;
             case DioExceptionType.receiveTimeout:
-              errorDescription = "Receive timeout in connection with API server";
+              errorDescription =
+                  "Receive timeout in connection with API server";
               break;
             case DioExceptionType.badResponse:
               switch (error.response!.statusCode) {
                 case 403:
-
-                  if(error.response!.data['errors'] != null){
-                    print('---------(api response -------${error.response!.data}----)');
-                    ErrorResponse errorResponse = ErrorResponse.fromJson(error.response?.data);
+                  if (error.response!.data['errors'] != null) {
+                    print(
+                        '---------(api response -------${error.response!.data}----)');
+                    ErrorResponse errorResponse =
+                        ErrorResponse.fromJson(error.response?.data);
                     errorDescription = errorResponse.errors?[0].message;
 
-                    print('---------(api response -------$errorDescription----)');
-
-                  }else{
+                    print(
+                        '---------(api response -------$errorDescription----)');
+                  } else {
                     errorDescription = error.response!.data['message'];
                   }
                   break;
                 case 401:
-                  if(error.response!.data['errors'] != null){
-                    ErrorResponse errorResponse = ErrorResponse.fromJson(error.response?.data);
+                  if (error.response!.data['errors'] != null) {
+                    ErrorResponse errorResponse =
+                        ErrorResponse.fromJson(error.response?.data);
                     errorDescription = errorResponse.errors?[0].message;
-                  } else{
+                  } else {
                     errorDescription = error.response!.data['message'];
                   }
-                  Provider.of<AuthController>(Get.context!,listen: false).clearSharedData();
+                  Provider.of<AuthController>(Get.context!, listen: false)
+                      .clearSharedData();
                   break;
                 case 404:
                 case 403:
-                   if(error.response!.data['error_type'] != null){
+                  if (error.response!.data['error_type'] != null) {
                     errorDescription = error.response!.data['message'];
-                   }
+                  }
                 case 500:
                   errorDescription = 'Internal server error';
                 case 503:
@@ -60,10 +63,14 @@ class ApiErrorHandler {
                   errorDescription = error.response!.statusMessage;
                   break;
                 default:
-                  ErrorResponse errorResponse = ErrorResponse.fromJson(error.response!.data);
-                  if (errorResponse.errors != null && errorResponse.errors!.isNotEmpty) {
+                  ErrorResponse errorResponse =
+                      ErrorResponse.fromJson(error.response!.data);
+                  if (errorResponse.errors != null &&
+                      errorResponse.errors!.isNotEmpty) {
                     errorDescription = errorResponse;
-                  } else {errorDescription = "Failed to load data - status code: ${error.response!.statusCode}";
+                  } else {
+                    errorDescription =
+                        "Failed to load data - status code: ${error.response!.statusCode}";
                   }
               }
               break;

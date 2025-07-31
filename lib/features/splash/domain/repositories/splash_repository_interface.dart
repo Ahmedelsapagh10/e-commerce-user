@@ -1,7 +1,6 @@
-import 'package:flutter_sixvalley_ecommerce/interface/repo_interface.dart';
+import 'package:mstore/interface/repo_interface.dart';
 
-abstract class SplashRepositoryInterface implements RepositoryInterface{
-
+abstract class SplashRepositoryInterface implements RepositoryInterface {
   Future<dynamic> getConfig();
   void initSharedData();
   String getCurrency();

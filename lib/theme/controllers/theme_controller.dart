@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/utill/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeController with ChangeNotifier {
@@ -26,15 +25,10 @@ class ThemeController with ChangeNotifier {
   Color? selectedPrimaryColor;
   Color? selectedSecondaryColor;
 
-
-
   void setThemeColor({Color? primaryColor, Color? secondaryColor}) {
     selectedPrimaryColor = primaryColor;
     selectedPrimaryColor = secondaryColor;
 
     notifyListeners();
   }
-
-
-
 }

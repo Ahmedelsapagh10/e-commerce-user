@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/color_resources.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/dimensions.dart';
+import 'package:mstore/utill/color_resources.dart';
+import 'package:mstore/utill/dimensions.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SupportTicketShimmer extends StatelessWidget {
@@ -12,7 +12,6 @@ class SupportTicketShimmer extends StatelessWidget {
       padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
       itemCount: 10,
       itemBuilder: (context, index) {
-
         return Container(
           padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
           margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
@@ -25,7 +24,8 @@ class SupportTicketShimmer extends StatelessWidget {
             baseColor: Theme.of(context).cardColor,
             highlightColor: Colors.grey[100]!,
             enabled: true,
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(height: 10, width: 100, color: ColorResources.white),
               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
               Container(height: 15, color: ColorResources.white),
@@ -40,7 +40,6 @@ class SupportTicketShimmer extends StatelessWidget {
             ]),
           ),
         );
-
       },
     );
   }

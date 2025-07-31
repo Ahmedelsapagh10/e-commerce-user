@@ -1,6 +1,5 @@
-import 'package:flutter_sixvalley_ecommerce/interface/repo_interface.dart';
+import 'package:mstore/interface/repo_interface.dart';
 
-abstract class FeaturedDealRepositoryInterface implements RepositoryInterface{
-
+abstract class FeaturedDealRepositoryInterface implements RepositoryInterface {
   Future<dynamic> getFeaturedDeal();
 }

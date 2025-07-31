@@ -1,45 +1,48 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/dio/dio_client.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/exception/api_error_handler.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/api_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/splash/controllers/splash_controller.dart';
-import 'package:flutter_sixvalley_ecommerce/features/wallet/domain/repositories/wallet_repository_interface.dart';
-import 'package:flutter_sixvalley_ecommerce/main.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/data/datasource/remote/dio/dio_client.dart';
+import 'package:mstore/data/datasource/remote/exception/api_error_handler.dart';
+import 'package:mstore/data/model/api_response.dart';
+import 'package:mstore/features/splash/controllers/splash_controller.dart';
+import 'package:mstore/features/wallet/domain/repositories/wallet_repository_interface.dart';
+import 'package:mstore/main.dart';
+import 'package:mstore/utill/app_constants.dart';
 import 'package:provider/provider.dart';
 
-class WalletRepository implements WalletRepositoryInterface{
+class WalletRepository implements WalletRepositoryInterface {
   final DioClient? dioClient;
   WalletRepository({required this.dioClient});
 
   @override
   Future<ApiResponse> getWalletTransactionList(int offset, String type) async {
     try {
-      Response response = await dioClient!.get('${AppConstants.walletTransactionUri}$offset&transaction_type=$type');
+      Response response = await dioClient!.get(
+          '${AppConstants.walletTransactionUri}$offset&transaction_type=$type');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
-
 
   @override
-  Future<ApiResponse> addFundToWallet(String amount, String paymentMethod) async {
+  Future<ApiResponse> addFundToWallet(
+      String amount, String paymentMethod) async {
     try {
-      final response = await dioClient!.post(AppConstants.addFundToWallet,
-          data: {'payment_platform': 'app',
-            'payment_method' : paymentMethod,
-            'payment_request_from': 'app',
-            'amount': amount,
-            'current_currency_code': Provider.of<SplashController>(Get.context!, listen: false).myCurrency!.code
-
-          });
+      final response =
+          await dioClient!.post(AppConstants.addFundToWallet, data: {
+        'payment_platform': 'app',
+        'payment_method': paymentMethod,
+        'payment_request_from': 'app',
+        'amount': amount,
+        'current_currency_code':
+            Provider.of<SplashController>(Get.context!, listen: false)
+                .myCurrency!
+                .code
+      });
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
-
 
   @override
   Future<ApiResponse> getWalletBonusBannerList() async {

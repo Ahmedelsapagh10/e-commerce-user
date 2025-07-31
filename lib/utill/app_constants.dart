@@ -1,5 +1,5 @@
-import 'package:flutter_sixvalley_ecommerce/localization/models/language_model.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/images.dart';
+import 'package:mstore/localization/models/language_model.dart';
+import 'package:mstore/utill/images.dart';
 
 class AppConstants {
   static const String appName = 'MStore';

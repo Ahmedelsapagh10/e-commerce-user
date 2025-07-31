@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sixvalley_ecommerce/localization/app_localization.dart';
+import 'package:mstore/localization/app_localization.dart';
 
 String? getTranslated(String? key, BuildContext context) {
   String? text = key;
-  try{
+  try {
     text = AppLocalization.of(context)!.translate(key);
-  }catch (error){
+  } catch (error) {
     text = "$key";
   }
   return text;

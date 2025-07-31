@@ -1,8 +1,8 @@
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/dio/dio_client.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/exception/api_error_handler.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/api_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/category/domain/repositories/category_repo_interface.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/data/datasource/remote/dio/dio_client.dart';
+import 'package:mstore/data/datasource/remote/exception/api_error_handler.dart';
+import 'package:mstore/data/model/api_response.dart';
+import 'package:mstore/features/category/domain/repositories/category_repo_interface.dart';
+import 'package:mstore/utill/app_constants.dart';
 
 class CategoryRepository implements CategoryRepoInterface {
   final DioClient? dioClient;
@@ -11,8 +11,7 @@ class CategoryRepository implements CategoryRepoInterface {
   @override
   Future<ApiResponse> getList({int? offset}) async {
     try {
-      final response = await dioClient!.get(
-        AppConstants.categoriesUri);
+      final response = await dioClient!.get(AppConstants.categoriesUri);
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -22,7 +21,8 @@ class CategoryRepository implements CategoryRepoInterface {
   @override
   Future<ApiResponse> getSellerWiseCategoryList(int sellerId) async {
     try {
-      final response = await dioClient!.get('${AppConstants.sellerWiseCategoryList}$sellerId');
+      final response = await dioClient!
+          .get('${AppConstants.sellerWiseCategoryList}$sellerId');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -46,8 +46,6 @@ class CategoryRepository implements CategoryRepoInterface {
     // TODO: implement get
     throw UnimplementedError();
   }
-
-
 
   @override
   Future update(Map<String, dynamic> body, int id) {

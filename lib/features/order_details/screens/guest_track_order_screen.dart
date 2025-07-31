@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sixvalley_ecommerce/features/order_details/controllers/order_details_controller.dart';
-import 'package:flutter_sixvalley_ecommerce/features/order_details/screens/order_details_screen.dart';
-import 'package:flutter_sixvalley_ecommerce/helper/velidate_check.dart';
-import 'package:flutter_sixvalley_ecommerce/localization/language_constrants.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/dimensions.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/images.dart';
-import 'package:flutter_sixvalley_ecommerce/common/basewidget/custom_app_bar_widget.dart';
-import 'package:flutter_sixvalley_ecommerce/common/basewidget/custom_button_widget.dart';
-import 'package:flutter_sixvalley_ecommerce/common/basewidget/custom_textfield_widget.dart';
+import 'package:mstore/features/order_details/controllers/order_details_controller.dart';
+import 'package:mstore/features/order_details/screens/order_details_screen.dart';
+import 'package:mstore/helper/velidate_check.dart';
+import 'package:mstore/localization/language_constrants.dart';
+import 'package:mstore/utill/dimensions.dart';
+import 'package:mstore/utill/images.dart';
+import 'package:mstore/common/basewidget/custom_app_bar_widget.dart';
+import 'package:mstore/common/basewidget/custom_button_widget.dart';
+import 'package:mstore/common/basewidget/custom_textfield_widget.dart';
 import 'package:provider/provider.dart';
 
 class GuestTrackOrderScreen extends StatefulWidget {
@@ -27,14 +27,16 @@ class _GuestTrackOrderScreenState extends State<GuestTrackOrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppBar(title: getTranslated('TRACK_ORDER', context)),
-      body: Consumer<OrderDetailsController>(
-        builder: (context, orderTrackingProvider, _) {
-          return Padding(padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+        body: Consumer<OrderDetailsController>(
+            builder: (context, orderTrackingProvider, _) {
+          return Padding(
+            padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
             child: Form(
               key: formKey,
               child: ListView(children: [
                 const SizedBox(height: Dimensions.paddingSizeSmall),
-                CustomTextFieldWidget(controller: orderIdController,
+                CustomTextFieldWidget(
+                  controller: orderIdController,
                   prefixIcon: Images.orderIdIcon,
                   isAmount: true,
                   inputType: TextInputType.phone,
@@ -42,11 +44,10 @@ class _GuestTrackOrderScreenState extends State<GuestTrackOrderScreen> {
                   labelText: getTranslated('order_id', context),
                   required: true,
                   showLabelText: false,
-                  validator: (value)=> ValidateCheck.validateEmptyText(value, 'order_id_is_required'),
+                  validator: (value) => ValidateCheck.validateEmptyText(
+                      value, 'order_id_is_required'),
                 ),
                 const SizedBox(height: Dimensions.paddingSizeDefault),
-
-
                 CustomTextFieldWidget(
                   isAmount: true,
                   inputType: TextInputType.phone,
@@ -57,11 +58,10 @@ class _GuestTrackOrderScreenState extends State<GuestTrackOrderScreen> {
                   required: true,
                   labelText: '${getTranslated('phone_number', context)}',
                   showLabelText: false,
-                  validator: (value)=> ValidateCheck.validateEmptyText(value, 'phone_number_is_required'),
-
+                  validator: (value) => ValidateCheck.validateEmptyText(
+                      value, 'phone_number_is_required'),
                 ),
                 const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-
                 CustomButton(
                   isLoading: orderTrackingProvider.searching,
                   buttonText: '${getTranslated('search_order', context)}',
@@ -70,25 +70,31 @@ class _GuestTrackOrderScreenState extends State<GuestTrackOrderScreen> {
                     String orderId = orderIdController.text.trim();
                     String phone = phoneNumberController.text.trim();
 
-                    if(formKey.currentState?.validate() ?? false) {
-                      await orderTrackingProvider.trackOrder(orderId: orderId.toString(), phoneNumber: phone, isUpdate: true).then((value) {
-                        if(value.response?.statusCode == 200){
-                          Navigator.push(context, MaterialPageRoute(builder: (_)=> OrderDetailsScreen(
-                            fromTrack: true,
-                            orderId: int.parse(orderIdController.text.trim()),
-                            phone: phone,
-                          )));
+                    if (formKey.currentState?.validate() ?? false) {
+                      await orderTrackingProvider
+                          .trackOrder(
+                              orderId: orderId.toString(),
+                              phoneNumber: phone,
+                              isUpdate: true)
+                          .then((value) {
+                        if (value.response?.statusCode == 200) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => OrderDetailsScreen(
+                                        fromTrack: true,
+                                        orderId: int.parse(
+                                            orderIdController.text.trim()),
+                                        phone: phone,
+                                      )));
                         }
                       });
                     }
                   },
                 ),
-
               ]),
             ),
           );
-        }
-      )
-    );
+        }));
   }
 }

@@ -1,5 +1,5 @@
-import 'package:flutter_sixvalley_ecommerce/data/model/image_full_url.dart';
-import 'package:flutter_sixvalley_ecommerce/features/shop/domain/models/seller_model.dart';
+import 'package:mstore/data/model/image_full_url.dart';
+import 'package:mstore/features/shop/domain/models/seller_model.dart';
 
 class ShopAgainFromRecentStoreModel {
   int? id;
@@ -12,18 +12,17 @@ class ShopAgainFromRecentStoreModel {
   int? reviewsCount;
   Seller? seller;
 
-
-  ShopAgainFromRecentStoreModel(
-      {this.id,
-        this.name,
-        this.slug,
-        this.thumbnail,
-        this.thumbnailFullUrl,
-        this.unitPrice,
-        this.userId,
-        this.reviewsCount,
-        this.seller,
-       });
+  ShopAgainFromRecentStoreModel({
+    this.id,
+    this.name,
+    this.slug,
+    this.thumbnail,
+    this.thumbnailFullUrl,
+    this.unitPrice,
+    this.userId,
+    this.reviewsCount,
+    this.seller,
+  });
 
   ShopAgainFromRecentStoreModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -35,8 +34,7 @@ class ShopAgainFromRecentStoreModel {
     reviewsCount = int.parse(json['reviews_count'].toString());
     seller = json['seller'] != null ? Seller.fromJson(json['seller']) : null;
     thumbnailFullUrl = json['thumbnail_full_url'] != null
-      ? ImageFullUrl.fromJson(json['thumbnail_full_url'])
-      : null;
+        ? ImageFullUrl.fromJson(json['thumbnail_full_url'])
+        : null;
   }
 }
-

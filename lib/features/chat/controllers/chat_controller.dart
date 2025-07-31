@@ -3,30 +3,24 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:flutter_sixvalley_ecommerce/common/basewidget/show_custom_snakbar_widget.dart';
-import 'package:flutter_sixvalley_ecommerce/features/chat/domain/models/message_body.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/api_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/chat/domain/models/chat_model.dart';
-import 'package:flutter_sixvalley_ecommerce/features/chat/domain/models/message_model.dart';
-import 'package:flutter_sixvalley_ecommerce/features/chat/domain/services/chat_service_interface.dart';
-import 'package:flutter_sixvalley_ecommerce/helper/api_checker.dart';
-import 'package:flutter_sixvalley_ecommerce/helper/date_converter.dart';
-import 'package:flutter_sixvalley_ecommerce/helper/image_size_checker.dart';
-import 'package:flutter_sixvalley_ecommerce/localization/language_constrants.dart';
-import 'package:flutter_sixvalley_ecommerce/main.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/common/basewidget/show_custom_snakbar_widget.dart';
+import 'package:mstore/features/chat/domain/models/message_body.dart';
+import 'package:mstore/data/model/api_response.dart';
+import 'package:mstore/features/chat/domain/models/chat_model.dart';
+import 'package:mstore/features/chat/domain/models/message_model.dart';
+import 'package:mstore/features/chat/domain/services/chat_service_interface.dart';
+import 'package:mstore/helper/api_checker.dart';
+import 'package:mstore/helper/date_converter.dart';
+import 'package:mstore/helper/image_size_checker.dart';
+import 'package:mstore/localization/language_constrants.dart';
+import 'package:mstore/main.dart';
+import 'package:mstore/utill/app_constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:open_file_plus/open_file_plus.dart';
 
-enum SenderType {
-  customer,
-  seller,
-  admin,
-  deliveryMan,
-  unknown
-}
+enum SenderType { customer, seller, admin, deliveryMan, unknown }
 
 class ChatController extends ChangeNotifier {
   final ChatServiceInterface? chatServiceInterface;
@@ -41,7 +35,7 @@ class ChatController extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   int _userTypeIndex = 0;
-  int get userTypeIndex =>  _userTypeIndex;
+  int get userTypeIndex => _userTypeIndex;
 
   ChatModel? chatModel;
   ChatModel? deliverymanChatModel;
@@ -49,8 +43,8 @@ class ChatController extends ChangeNotifier {
   ChatModel? searchChatModel;
   ChatModel? searchDeliverymanChatModel;
 
-  bool sellerChatCall= false;
-  bool deliveryChatCall= false;
+  bool sellerChatCall = false;
+  bool deliveryChatCall = false;
 
   bool _isActiveSuffixIcon = false;
   bool get isActiveSuffixIcon => _isActiveSuffixIcon;
@@ -81,75 +75,98 @@ class ChatController extends ChangeNotifier {
   String _onMessageTimeShowID = '';
   String get onMessageTimeShowID => _onMessageTimeShowID;
 
-
-  Future<void> getChatList( int offset, {bool reload = true, int? userType}) async {
-    if(reload){
+  Future<void> getChatList(int offset,
+      {bool reload = true, int? userType}) async {
+    if (reload) {
       notifyListeners();
     }
 
-    if(offset == 1){
-      if(offset == 1 && userType == 0){
+    if (offset == 1) {
+      if (offset == 1 && userType == 0) {
         deliverymanChatModel = null;
-      }else if (offset == 1 && userType == 1) {
+      } else if (offset == 1 && userType == 1) {
         chatModel = null;
       }
-      if(userType == null){
+      if (userType == null) {
         notifyListeners();
       }
     }
 
-    ApiResponse apiResponse = await chatServiceInterface!.getChatList(userType!= null ? userType  == 0 ? 'delivery-man' : 'seller' : _userTypeIndex == 0 ? 'delivery-man' : 'seller', offset);
-    if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
-      if(offset == 1){
-        if(userType == 0) {
+    ApiResponse apiResponse = await chatServiceInterface!.getChatList(
+        userType != null
+            ? userType == 0
+                ? 'delivery-man'
+                : 'seller'
+            : _userTypeIndex == 0
+                ? 'delivery-man'
+                : 'seller',
+        offset);
+    if (apiResponse.response != null &&
+        apiResponse.response!.statusCode == 200) {
+      if (offset == 1) {
+        if (userType == 0) {
           deliverymanChatModel = null;
           deliverymanChatModel = ChatModel.fromJson(apiResponse.response!.data);
-        }else {
+        } else {
           chatModel = null;
           chatModel = ChatModel.fromJson(apiResponse.response!.data);
         }
-      }else{
-        if(userType == 0) {
-          deliverymanChatModel?.chat?.addAll(ChatModel.fromJson(apiResponse.response!.data).chat!);
-          deliverymanChatModel?.offset  = (ChatModel.fromJson(apiResponse.response!.data).offset!);
-          deliverymanChatModel?.totalSize  = (ChatModel.fromJson(apiResponse.response!.data).totalSize!);
+      } else {
+        if (userType == 0) {
+          deliverymanChatModel?.chat
+              ?.addAll(ChatModel.fromJson(apiResponse.response!.data).chat!);
+          deliverymanChatModel?.offset =
+              (ChatModel.fromJson(apiResponse.response!.data).offset!);
+          deliverymanChatModel?.totalSize =
+              (ChatModel.fromJson(apiResponse.response!.data).totalSize!);
         } else {
-          chatModel?.chat?.addAll(ChatModel.fromJson(apiResponse.response!.data).chat!);
-          chatModel?.offset  = (ChatModel.fromJson(apiResponse.response!.data).offset!);
-          chatModel?.totalSize  = (ChatModel.fromJson(apiResponse.response!.data).totalSize!);
+          chatModel?.chat
+              ?.addAll(ChatModel.fromJson(apiResponse.response!.data).chat!);
+          chatModel?.offset =
+              (ChatModel.fromJson(apiResponse.response!.data).offset!);
+          chatModel?.totalSize =
+              (ChatModel.fromJson(apiResponse.response!.data).totalSize!);
         }
       }
     } else {
-      ApiChecker.checkApi( apiResponse);
+      ApiChecker.checkApi(apiResponse);
     }
     // if(userType == null){
-      notifyListeners();
+    notifyListeners();
     // }
   }
 
-  Future<void> searchChat(BuildContext context, String search, int userIndex) async {
+  Future<void> searchChat(
+      BuildContext context, String search, int userIndex) async {
     _isLoading = true;
     searchChatModel = null;
     _isSearchComplete = false;
     notifyListeners();
-    ApiResponse apiResponse = await chatServiceInterface!.searchChat(userIndex == 0? 'seller' : 'delivery-man', search);
-    if (apiResponse.response != null && apiResponse.response?.statusCode == 200 && apiResponse.response is !List) {
-      if(userIndex == 0) {
+    ApiResponse apiResponse = await chatServiceInterface!
+        .searchChat(userIndex == 0 ? 'seller' : 'delivery-man', search);
+    if (apiResponse.response != null &&
+        apiResponse.response?.statusCode == 200 &&
+        apiResponse.response is! List) {
+      if (userIndex == 0) {
         searchChatModel = null;
-        searchChatModel = ChatModel(totalSize: 1, limit: '10', offset: '1', chat: []);
+        searchChatModel =
+            ChatModel(totalSize: 1, limit: '10', offset: '1', chat: []);
 
-        apiResponse.response!.data.forEach((chat) => searchChatModel!.chat!.add(Chat.fromJson(chat)));
+        apiResponse.response!.data
+            .forEach((chat) => searchChatModel!.chat!.add(Chat.fromJson(chat)));
         searchChatModel?.chat = searchChatModel!.chat;
       } else {
         searchDeliverymanChatModel = null;
-        searchDeliverymanChatModel = ChatModel(totalSize: 1, limit: '10', offset: '1', chat: []);
+        searchDeliverymanChatModel =
+            ChatModel(totalSize: 1, limit: '10', offset: '1', chat: []);
 
-        apiResponse.response!.data.forEach((chat) => searchDeliverymanChatModel!.chat!.add(Chat.fromJson(chat)));
+        apiResponse.response!.data.forEach((chat) =>
+            searchDeliverymanChatModel!.chat!.add(Chat.fromJson(chat)));
         searchDeliverymanChatModel?.chat = searchDeliverymanChatModel!.chat;
       }
     } else {
       _isLoading = false;
-      ApiChecker.checkApi( apiResponse);
+      ApiChecker.checkApi(apiResponse);
     }
 
     // if(tabController?.index == 0 && searchDeliverymanChatModel!.chat!.isEmpty && searchChatModel!.chat!.isNotEmpty){
@@ -163,81 +180,113 @@ class ChatController extends ChangeNotifier {
     notifyListeners();
   }
 
-
   List<String> dateList = [];
-  List<dynamic> messageList=[];
-  List<Message> allMessageList=[];
+  List<dynamic> messageList = [];
+  List<Message> allMessageList = [];
   MessageModel? messageModel;
 
-  Future<void> getMessageList(BuildContext context, int? id, int offset, {bool reload = true, int? userType}) async {
-    if(reload){
+  Future<void> getMessageList(BuildContext context, int? id, int offset,
+      {bool reload = true, int? userType}) async {
+    if (reload) {
       messageModel = null;
       dateList = [];
       messageList = [];
       allMessageList = [];
     }
     _isLoading = true;
-    ApiResponse apiResponse = await chatServiceInterface!.getMessageList(userType != null ? userType == 0 ? 'delivery-man' : 'seller' : _userTypeIndex == 0? 'delivery-man' : 'seller', id, offset);
-    if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
-      if(offset == 1){
+    ApiResponse apiResponse = await chatServiceInterface!.getMessageList(
+        userType != null
+            ? userType == 0
+                ? 'delivery-man'
+                : 'seller'
+            : _userTypeIndex == 0
+                ? 'delivery-man'
+                : 'seller',
+        id,
+        offset);
+    if (apiResponse.response != null &&
+        apiResponse.response!.statusCode == 200) {
+      if (offset == 1) {
         messageModel = null;
         dateList = [];
         messageList = [];
         allMessageList = [];
         messageModel = MessageModel.fromJson(apiResponse.response!.data);
         for (var data in messageModel!.message!) {
-          if(!dateList.contains(DateConverter.dateStringMonthYear(DateTime.tryParse(data.createdAt!)))) {
-            dateList.add(DateConverter.dateStringMonthYear(DateTime.tryParse(data.createdAt!)));
+          if (!dateList.contains(DateConverter.dateStringMonthYear(
+              DateTime.tryParse(data.createdAt!)))) {
+            dateList.add(DateConverter.dateStringMonthYear(
+                DateTime.tryParse(data.createdAt!)));
           }
           allMessageList.add(data);
         }
-        for(int i=0; i< dateList.length; i++){
+        for (int i = 0; i < dateList.length; i++) {
           messageList.add([]);
           for (var element in allMessageList) {
-            if(dateList[i]== DateConverter.dateStringMonthYear(DateTime.tryParse(element.createdAt!))){
+            if (dateList[i] ==
+                DateConverter.dateStringMonthYear(
+                    DateTime.tryParse(element.createdAt!))) {
               messageList[i].add(element);
             }
           }
         }
-      } else{
+      } else {
         messageModel = MessageModel(message: [], totalSize: 0, offset: '0');
         messageModel?.message = [];
-        messageModel!.totalSize =  MessageModel.fromJson(apiResponse.response!.data).totalSize;
-        messageModel!.offset =  MessageModel.fromJson(apiResponse.response!.data).offset;
-        messageModel!.message!.addAll(MessageModel.fromJson(apiResponse.response!.data).message!) ;
+        messageModel!.totalSize =
+            MessageModel.fromJson(apiResponse.response!.data).totalSize;
+        messageModel!.offset =
+            MessageModel.fromJson(apiResponse.response!.data).offset;
+        messageModel!.message!
+            .addAll(MessageModel.fromJson(apiResponse.response!.data).message!);
 
         for (var data in messageModel!.message!) {
-          if(!dateList.contains(DateConverter.dateStringMonthYear(DateTime.tryParse(data.createdAt!)))) {
-            dateList.add(DateConverter.dateStringMonthYear(DateTime.tryParse(data.createdAt!)));
+          if (!dateList.contains(DateConverter.dateStringMonthYear(
+              DateTime.tryParse(data.createdAt!)))) {
+            dateList.add(DateConverter.dateStringMonthYear(
+                DateTime.tryParse(data.createdAt!)));
           }
           allMessageList.add(data);
         }
 
-        for(int i=0; i< dateList.length; i++) {
+        for (int i = 0; i < dateList.length; i++) {
           messageList.add([]);
           for (var element in allMessageList) {
-            if(dateList[i]== DateConverter.dateStringMonthYear(DateTime.tryParse(element.createdAt!))){
+            if (dateList[i] ==
+                DateConverter.dateStringMonthYear(
+                    DateTime.tryParse(element.createdAt!))) {
               messageList[i].add(element);
-            }}
+            }
+          }
         }
       }
     } else {
       _isLoading = false;
-      ApiChecker.checkApi( apiResponse);
+      ApiChecker.checkApi(apiResponse);
     }
     _isLoading = false;
     notifyListeners();
   }
 
-
-
-  Future<http.StreamedResponse> sendMessage(MessageBody messageBody,{int? userType}) async {
+  Future<http.StreamedResponse> sendMessage(MessageBody messageBody,
+      {int? userType}) async {
     _isLoading = true;
     notifyListeners();
-    http.StreamedResponse response = await chatServiceInterface!.sendMessage(messageBody, userType != null ? userType == 0 ? 'delivery-man' : 'seller' : _userTypeIndex == 0? 'delivery-man' : 'seller', pickedImageFileStored ?? [], objFile ?? []);
+    http.StreamedResponse response = await chatServiceInterface!.sendMessage(
+        messageBody,
+        userType != null
+            ? userType == 0
+                ? 'delivery-man'
+                : 'seller'
+            : _userTypeIndex == 0
+                ? 'delivery-man'
+                : 'seller',
+        pickedImageFileStored ?? [],
+        objFile ?? []);
 
     if (response.statusCode == 200) {
-      getMessageList(Get.context!, messageBody.id, 1, reload: false, userType: userType);
+      getMessageList(Get.context!, messageBody.id, 1,
+          reload: false, userType: userType);
       _pickedImageFiles = [];
       pickedImageFileStored = [];
       _isLoading = false;
@@ -252,10 +301,13 @@ class ChatController extends ChangeNotifier {
     return response;
   }
 
-
-  Future<ApiResponse> seenMessage(BuildContext context, int? sellerId, int? deliveryId) async {
-    ApiResponse apiResponse = await chatServiceInterface!.seenMessage(_userTypeIndex == 0? sellerId!: deliveryId!, _userTypeIndex == 0? 'delivery-man' : 'seller');
-    if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
+  Future<ApiResponse> seenMessage(
+      BuildContext context, int? sellerId, int? deliveryId) async {
+    ApiResponse apiResponse = await chatServiceInterface!.seenMessage(
+        _userTypeIndex == 0 ? sellerId! : deliveryId!,
+        _userTypeIndex == 0 ? 'delivery-man' : 'seller');
+    if (apiResponse.response != null &&
+        apiResponse.response!.statusCode == 200) {
       // await getChatList(1);
     } else {
       ApiChecker.checkApi(apiResponse);
@@ -264,9 +316,6 @@ class ChatController extends ChangeNotifier {
     notifyListeners();
     return apiResponse;
   }
-
-
-
 
   void toggleSendButtonActivity() {
     _isSendButtonActive = !_isSendButtonActive;
@@ -289,64 +338,74 @@ class ChatController extends ChangeNotifier {
     _isSearching = !_isSearching;
     notifyListeners();
   }
-  void setUserTypeIndex(BuildContext context, int index, {bool searchActive = false, bool isUpdate = true}) {
+
+  void setUserTypeIndex(BuildContext context, int index,
+      {bool searchActive = false, bool isUpdate = true}) {
     _userTypeIndex = index;
-    if(!searchActive){
+    if (!searchActive) {
       // getChatList(1);
     }
 
-    if(isUpdate){
+    if (isUpdate) {
       notifyListeners();
     }
   }
 
-  List <XFile> _pickedImageFiles =[];
-  List <XFile>? get pickedImageFile => _pickedImageFiles;
-  List <XFile>?  pickedImageFileStored = [];
-  void pickMultipleImage(bool isRemove,{int? index}) async {
+  List<XFile> _pickedImageFiles = [];
+  List<XFile>? get pickedImageFile => _pickedImageFiles;
+  List<XFile>? pickedImageFileStored = [];
+  void pickMultipleImage(bool isRemove, {int? index}) async {
     _pickedFIleCrossMaxLimit = false;
     _pickedFIleCrossMaxLength = false;
-    if(isRemove) {
-      if(index != null){
+    if (isRemove) {
+      if (index != null) {
         pickedImageFileStored?.removeAt(index);
       }
-    }else {
+    } else {
       _pickedImageFiles = await ImagePicker().pickMultiImage(imageQuality: 40);
       pickedImageFileStored?.addAll(_pickedImageFiles);
     }
-    if(pickedImageFileStored!.length > AppConstants.maxLimitOfTotalFileSent){
+    if (pickedImageFileStored!.length > AppConstants.maxLimitOfTotalFileSent) {
       _pickedFIleCrossMaxLength = true;
     }
-    if( _pickedImageFiles.length == AppConstants.maxLimitOfTotalFileSent && await ImageSize.getMultipleImageSizeFromXFile(pickedImageFileStored!) > AppConstants.maxLimitOfFileSentINConversation){
+    if (_pickedImageFiles.length == AppConstants.maxLimitOfTotalFileSent &&
+        await ImageSize.getMultipleImageSizeFromXFile(pickedImageFileStored!) >
+            AppConstants.maxLimitOfFileSentINConversation) {
       _pickedFIleCrossMaxLimit = true;
     }
     notifyListeners();
   }
 
-  void showSuffixIcon(context,String text){
-    if(text.isNotEmpty){
+  void showSuffixIcon(context, String text) {
+    if (text.isNotEmpty) {
       _isActiveSuffixIcon = true;
-    }else if(text.isEmpty){
+    } else if (text.isEmpty) {
       _isActiveSuffixIcon = false;
       _isSearchComplete = false;
     }
     notifyListeners();
   }
 
-
-  bool isSameUserWithPreviousMessage(Message? previousConversation, Message currentConversation){
-    if(getSenderType(previousConversation) == getSenderType(currentConversation) && previousConversation?.message != null && currentConversation.message !=null){
-      return true;
-    }
-    return false;
-  }
-  bool isSameUserWithNextMessage( Message currentConversation, Message? nextConversation){
-    if(getSenderType(currentConversation) == getSenderType(nextConversation) && nextConversation?.message != null && currentConversation.message !=null){
+  bool isSameUserWithPreviousMessage(
+      Message? previousConversation, Message currentConversation) {
+    if (getSenderType(previousConversation) ==
+            getSenderType(currentConversation) &&
+        previousConversation?.message != null &&
+        currentConversation.message != null) {
       return true;
     }
     return false;
   }
 
+  bool isSameUserWithNextMessage(
+      Message currentConversation, Message? nextConversation) {
+    if (getSenderType(currentConversation) == getSenderType(nextConversation) &&
+        nextConversation?.message != null &&
+        currentConversation.message != null) {
+      return true;
+    }
+    return false;
+  }
 
   SenderType getSenderType(Message? senderData) {
     if (senderData?.sentByCustomer == true) {
@@ -362,19 +421,20 @@ class ChatController extends ChangeNotifier {
     }
   }
 
-
-
-  String getChatTime (String todayChatTimeInUtc , String? nextChatTimeInUtc) {
+  String getChatTime(String todayChatTimeInUtc, String? nextChatTimeInUtc) {
     String chatTime = '';
-    DateTime todayConversationDateTime = DateConverter.isoUtcStringToLocalTimeOnly(todayChatTimeInUtc);
+    DateTime todayConversationDateTime =
+        DateConverter.isoUtcStringToLocalTimeOnly(todayChatTimeInUtc);
     DateTime nextConversationDateTime;
     DateTime currentDate = DateTime.now();
 
-    if(nextChatTimeInUtc == null){
-      String chatTime = DateConverter.isoStringToLocalDateAndTime(todayChatTimeInUtc);
+    if (nextChatTimeInUtc == null) {
+      String chatTime =
+          DateConverter.isoStringToLocalDateAndTime(todayChatTimeInUtc);
       return chatTime;
-    }else{
-      nextConversationDateTime = DateConverter.isoUtcStringToLocalTimeOnly(nextChatTimeInUtc);
+    } else {
+      nextConversationDateTime =
+          DateConverter.isoUtcStringToLocalTimeOnly(nextChatTimeInUtc);
 
       // print('====NextConversationTime=====>>${nextConversationDateTime}');
       // print('====TodayConversationTime=====>>${todayConversationDateTime}');
@@ -382,24 +442,28 @@ class ChatController extends ChangeNotifier {
       //
       // print("==IF==01==>>${todayConversationDateTime.difference(nextConversationDateTime) < const Duration(minutes: 30)}");
 
-
-      if(todayConversationDateTime.difference(nextConversationDateTime) < const Duration(minutes: 30) &&
-          todayConversationDateTime.weekday == nextConversationDateTime.weekday){
+      if (todayConversationDateTime.difference(nextConversationDateTime) <
+              const Duration(minutes: 30) &&
+          todayConversationDateTime.weekday ==
+              nextConversationDateTime.weekday) {
         chatTime = '';
-      }else if(currentDate.weekday != todayConversationDateTime.weekday
-          && DateConverter.countDays(todayConversationDateTime) < 6){
-
-        if( (currentDate.weekday -1 == 0 ? 7 : currentDate.weekday -1) == todayConversationDateTime.weekday){
-          chatTime = DateConverter.convert24HourTimeTo12HourTimeWithDay(todayConversationDateTime, false);
-        }else{
-          chatTime = DateConverter.convertStringTimeToDate(todayConversationDateTime);
+      } else if (currentDate.weekday != todayConversationDateTime.weekday &&
+          DateConverter.countDays(todayConversationDateTime) < 6) {
+        if ((currentDate.weekday - 1 == 0 ? 7 : currentDate.weekday - 1) ==
+            todayConversationDateTime.weekday) {
+          chatTime = DateConverter.convert24HourTimeTo12HourTimeWithDay(
+              todayConversationDateTime, false);
+        } else {
+          chatTime =
+              DateConverter.convertStringTimeToDate(todayConversationDateTime);
         }
-
-      }else if(currentDate.weekday == todayConversationDateTime.weekday
-          && DateConverter.countDays(todayConversationDateTime) < 6){
-        chatTime = DateConverter.convert24HourTimeTo12HourTimeWithDay(todayConversationDateTime, true);
-      }else{
-        chatTime = DateConverter.isoStringToLocalDateAndTimeConversation(todayChatTimeInUtc);
+      } else if (currentDate.weekday == todayConversationDateTime.weekday &&
+          DateConverter.countDays(todayConversationDateTime) < 6) {
+        chatTime = DateConverter.convert24HourTimeTo12HourTimeWithDay(
+            todayConversationDateTime, true);
+      } else {
+        chatTime = DateConverter.isoStringToLocalDateAndTimeConversation(
+            todayChatTimeInUtc);
       }
     }
     return chatTime;
@@ -409,42 +473,65 @@ class ChatController extends ChangeNotifier {
     _pickedFIleCrossMaxLimit = false;
     _pickedFIleCrossMaxLength = false;
     _singleFIleCrossMaxLimit = false;
-    List<String> allowedExtentions = ['doc', 'docx', 'txt', 'csv', 'xls', 'xlsx', 'rar', 'tar', 'targz', 'zip', 'pdf'];
+    List<String> allowedExtentions = [
+      'doc',
+      'docx',
+      'txt',
+      'csv',
+      'xls',
+      'xlsx',
+      'rar',
+      'tar',
+      'targz',
+      'zip',
+      'pdf'
+    ];
 
-    if(isRemove){
-      if(objFile!=null){
+    if (isRemove) {
+      if (objFile != null) {
         objFile!.removeAt(index!);
       }
-    }else{
+    } else {
       List<PlatformFile>? platformFile = (await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: allowedExtentions,
         allowMultiple: true,
         withReadStream: true,
-      ))?.files ;
+      ))
+          ?.files;
 
       objFile = [];
       // _pickedImageFiles = [];
       // pickedImageFileStored = [];
 
       platformFile?.forEach((element) {
-        if(ImageSize.getFileSizeFromPlatformFileToDouble(element) > AppConstants.maxSizeOfASingleFile) {
+        if (ImageSize.getFileSizeFromPlatformFileToDouble(element) >
+            AppConstants.maxSizeOfASingleFile) {
           _singleFIleCrossMaxLimit = true;
-        } else{
-          if(!allowedExtentions.contains(element.extension)){
-            showCustomSnackBar(getTranslated('file_type_should_be', Get.context!), Get.context!);
-          } else if(  objFile!.length < AppConstants.maxLimitOfTotalFileSent){
-            if((ImageSize.getMultipleFileSizeFromPlatformFiles(objFile!) + ImageSize.getFileSizeFromPlatformFileToDouble(element)) < AppConstants.maxLimitOfFileSentINConversation){
+        } else {
+          if (!allowedExtentions.contains(element.extension)) {
+            showCustomSnackBar(
+                getTranslated('file_type_should_be', Get.context!),
+                Get.context!);
+          } else if (objFile!.length < AppConstants.maxLimitOfTotalFileSent) {
+            if ((ImageSize.getMultipleFileSizeFromPlatformFiles(objFile!) +
+                    ImageSize.getFileSizeFromPlatformFileToDouble(element)) <
+                AppConstants.maxLimitOfFileSentINConversation) {
               objFile!.add(element);
             }
           }
         }
       });
 
-      if(objFile?.length == AppConstants.maxLimitOfTotalFileSent && platformFile != null &&   platformFile.length > AppConstants.maxLimitOfTotalFileSent){
+      if (objFile?.length == AppConstants.maxLimitOfTotalFileSent &&
+          platformFile != null &&
+          platformFile.length > AppConstants.maxLimitOfTotalFileSent) {
         _pickedFIleCrossMaxLength = true;
       }
-      if(objFile?.length == AppConstants.maxLimitOfTotalFileSent && platformFile != null && ImageSize.getMultipleFileSizeFromPlatformFiles(platformFile) > AppConstants.maxLimitOfFileSentINConversation){
+      if (objFile?.length == AppConstants.maxLimitOfTotalFileSent &&
+          platformFile != null &&
+          ImageSize.getMultipleFileSizeFromPlatformFiles(platformFile) >
+              AppConstants.maxLimitOfFileSentINConversation) {
         _pickedFIleCrossMaxLimit = true;
       }
     }
@@ -457,12 +544,16 @@ class ChatController extends ChangeNotifier {
     }).toList();
   }
 
-  void downloadFile(String url, String dir, String openFileUrl, String fileName) async {
-
-    var snackBar = const SnackBar(content: Text('Downloading....'),backgroundColor: Colors.black54, duration: Duration(seconds: 1),);
+  void downloadFile(
+      String url, String dir, String openFileUrl, String fileName) async {
+    var snackBar = const SnackBar(
+      content: Text('Downloading....'),
+      backgroundColor: Colors.black54,
+      duration: Duration(seconds: 1),
+    );
     ScaffoldMessenger.of(Get.context!).showSnackBar(snackBar);
 
-    final task  = await FlutterDownloader.enqueue(
+    final task = await FlutterDownloader.enqueue(
       url: url,
       savedDir: dir,
       fileName: fileName,
@@ -471,15 +562,14 @@ class ChatController extends ChangeNotifier {
       openFileFromNotification: true,
     );
 
-    if(task !=null){
+    if (task != null) {
       await OpenFile.open(openFileUrl);
     }
   }
 
-
-  String getChatTimeWithPrevious (Message currentChat, Message? previousChat) {
-    DateTime todayConversationDateTime = DateConverter
-        .isoUtcStringToLocalTimeOnly(currentChat.createdAt ?? "");
+  String getChatTimeWithPrevious(Message currentChat, Message? previousChat) {
+    DateTime todayConversationDateTime =
+        DateConverter.isoUtcStringToLocalTimeOnly(currentChat.createdAt ?? "");
 
     DateTime previousConversationDateTime;
 
@@ -489,63 +579,64 @@ class ChatController extends ChangeNotifier {
       previousConversationDateTime =
           DateConverter.isoUtcStringToLocalTimeOnly(previousChat!.createdAt!);
       if (kDebugMode) {
-        print("The Difference is ${previousConversationDateTime.difference(todayConversationDateTime) < const Duration(minutes: 30)}");
+        print(
+            "The Difference is ${previousConversationDateTime.difference(todayConversationDateTime) < const Duration(minutes: 30)}");
       }
       if (previousConversationDateTime.difference(todayConversationDateTime) <
-          const Duration(minutes: 30) &&
+              const Duration(minutes: 30) &&
           todayConversationDateTime.weekday ==
-              previousConversationDateTime.weekday && isSameUserWithPreviousMessage(currentChat, previousChat)) {
+              previousConversationDateTime.weekday &&
+          isSameUserWithPreviousMessage(currentChat, previousChat)) {
         return '';
       } else {
         return 'Not-Same';
       }
     }
-
   }
 
-
-  void toggleOnClickMessage ({required String onMessageTimeShowID}) {
+  void toggleOnClickMessage({required String onMessageTimeShowID}) {
     _onImageOrFileTimeShowID = '';
     _isClickedOnImageOrFile = false;
-    if(_isClickedOnMessage && _onMessageTimeShowID != onMessageTimeShowID){
+    if (_isClickedOnMessage && _onMessageTimeShowID != onMessageTimeShowID) {
       _onMessageTimeShowID = onMessageTimeShowID;
-    }else if(_isClickedOnMessage && _onMessageTimeShowID == onMessageTimeShowID){
+    } else if (_isClickedOnMessage &&
+        _onMessageTimeShowID == onMessageTimeShowID) {
       _isClickedOnMessage = false;
       _onMessageTimeShowID = '';
-    }else{
+    } else {
       _isClickedOnMessage = true;
       _onMessageTimeShowID = onMessageTimeShowID;
     }
     notifyListeners();
   }
 
-
-  String? getOnPressChatTime(Message currentConversation){
-    if(currentConversation.id.toString() == _onMessageTimeShowID || currentConversation.id.toString() == _onImageOrFileTimeShowID){
+  String? getOnPressChatTime(Message currentConversation) {
+    if (currentConversation.id.toString() == _onMessageTimeShowID ||
+        currentConversation.id.toString() == _onImageOrFileTimeShowID) {
       DateTime currentDate = DateTime.now();
-      DateTime todayConversationDateTime = DateConverter.isoUtcStringToLocalTimeOnly(
-          currentConversation.createdAt ?? ""
-      );
+      DateTime todayConversationDateTime =
+          DateConverter.isoUtcStringToLocalTimeOnly(
+              currentConversation.createdAt ?? "");
 
-      if(currentDate.weekday != todayConversationDateTime.weekday
-          && DateConverter.countDays(todayConversationDateTime) <= 7){
-        return DateConverter.convertStringTimeToDateChatting(todayConversationDateTime);
-      }else if(currentDate.weekday == todayConversationDateTime.weekday
-          && DateConverter.countDays(todayConversationDateTime) <= 7){
-        return  DateConverter.convert24HourTimeTo12HourTime(todayConversationDateTime);
-      }else{
-        return DateConverter.isoStringToLocalDateAndTime(currentConversation.createdAt!);
+      if (currentDate.weekday != todayConversationDateTime.weekday &&
+          DateConverter.countDays(todayConversationDateTime) <= 7) {
+        return DateConverter.convertStringTimeToDateChatting(
+            todayConversationDateTime);
+      } else if (currentDate.weekday == todayConversationDateTime.weekday &&
+          DateConverter.countDays(todayConversationDateTime) <= 7) {
+        return DateConverter.convert24HourTimeTo12HourTime(
+            todayConversationDateTime);
+      } else {
+        return DateConverter.isoStringToLocalDateAndTime(
+            currentConversation.createdAt!);
       }
-    }else{
+    } else {
       return null;
     }
   }
 
-
-  void resetIsSearchComplete(){
+  void resetIsSearchComplete() {
     _isSearchComplete = false;
     notifyListeners();
   }
-
-
 }

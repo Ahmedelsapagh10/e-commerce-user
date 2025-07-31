@@ -1,4 +1,4 @@
-import 'package:flutter_sixvalley_ecommerce/data/model/image_full_url.dart';
+import 'package:mstore/data/model/image_full_url.dart';
 
 class RefundResultModel {
   double? productPrice;
@@ -12,13 +12,13 @@ class RefundResultModel {
 
   RefundResultModel(
       {this.productPrice,
-        this.quntity,
-        this.productTotalDiscount,
-        this.productTotalTax,
-        this.subtotal,
-        this.couponDiscount,
-        this.refundAmount,
-        this.refundRequest});
+      this.quntity,
+      this.productTotalDiscount,
+      this.productTotalTax,
+      this.subtotal,
+      this.couponDiscount,
+      this.refundAmount,
+      this.refundRequest});
 
   RefundResultModel.fromJson(Map<String, dynamic> json) {
     productPrice = json['product_price'].toDouble();
@@ -46,8 +46,7 @@ class RefundResultModel {
     data['coupon_discount'] = couponDiscount;
     data['refund_amount'] = refundAmount;
     if (refundRequest != null) {
-      data['refund_request'] =
-          refundRequest!.map((v) => v.toJson()).toList();
+      data['refund_request'] = refundRequest!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -73,21 +72,21 @@ class RefundRequest {
 
   RefundRequest(
       {this.id,
-        this.orderDetailsId,
-        this.customerId,
-        this.status,
-        this.amount,
-        this.productId,
-        this.orderId,
-        this.refundReason,
-        this.images,
-        this.createdAt,
-        this.updatedAt,
-        this.approvedNote,
-        this.rejectedNote,
-        this.paymentInfo,
-        this.changeBy,
-        this.imagesFullUrl});
+      this.orderDetailsId,
+      this.customerId,
+      this.status,
+      this.amount,
+      this.productId,
+      this.orderId,
+      this.refundReason,
+      this.images,
+      this.createdAt,
+      this.updatedAt,
+      this.approvedNote,
+      this.rejectedNote,
+      this.paymentInfo,
+      this.changeBy,
+      this.imagesFullUrl});
 
   RefundRequest.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -98,7 +97,7 @@ class RefundRequest {
     productId = json['product_id'];
     orderId = json['order_id'];
     refundReason = json['refund_reason'];
-    if(json['images'] != null){
+    if (json['images'] != null) {
       images = json['images'].cast<String>();
     }
 
@@ -114,7 +113,6 @@ class RefundRequest {
         imagesFullUrl!.add(ImageFullUrl.fromJson(v));
       });
     }
-
   }
 
   Map<String, dynamic> toJson() {

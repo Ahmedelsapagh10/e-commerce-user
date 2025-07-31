@@ -1,8 +1,8 @@
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/dio/dio_client.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/exception/api_error_handler.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/api_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/compare/domain/repositories/compare_repository_interface.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/data/datasource/remote/dio/dio_client.dart';
+import 'package:mstore/data/datasource/remote/exception/api_error_handler.dart';
+import 'package:mstore/data/model/api_response.dart';
+import 'package:mstore/features/compare/domain/repositories/compare_repository_interface.dart';
+import 'package:mstore/utill/app_constants.dart';
 
 class CompareRepository implements CompareRepositoryInterface {
   final DioClient? dioClient;
@@ -21,7 +21,8 @@ class CompareRepository implements CompareRepositoryInterface {
   @override
   Future<ApiResponse> addCompareProductList(int id) async {
     try {
-      final response = await dioClient!.post(AppConstants.addToCompareList, data: {'product_id' : id});
+      final response = await dioClient!
+          .post(AppConstants.addToCompareList, data: {'product_id': id});
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -31,18 +32,21 @@ class CompareRepository implements CompareRepositoryInterface {
   @override
   Future<ApiResponse> removeAllCompareProductList() async {
     try {
-      final response = await dioClient!.post(AppConstants.removeAllFromCompareList, data: {'_method':'delete'});
+      final response = await dioClient!.post(
+          AppConstants.removeAllFromCompareList,
+          data: {'_method': 'delete'});
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
 
-
   @override
-  Future<ApiResponse> replaceCompareProductList(int compareId, int productId) async {
+  Future<ApiResponse> replaceCompareProductList(
+      int compareId, int productId) async {
     try {
-      final response = await dioClient!.get('${AppConstants.replaceFromCompareList}?compare_id=$compareId&product_id=$productId');
+      final response = await dioClient!.get(
+          '${AppConstants.replaceFromCompareList}?compare_id=$compareId&product_id=$productId');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -82,5 +86,4 @@ class CompareRepository implements CompareRepositoryInterface {
     // TODO: implement update
     throw UnimplementedError();
   }
-
 }

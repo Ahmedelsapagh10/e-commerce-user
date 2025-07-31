@@ -1,10 +1,10 @@
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/dio/dio_client.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/exception/api_error_handler.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/api_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/brand/domain/repositories/brand_repo_interface.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/data/datasource/remote/dio/dio_client.dart';
+import 'package:mstore/data/datasource/remote/exception/api_error_handler.dart';
+import 'package:mstore/data/model/api_response.dart';
+import 'package:mstore/features/brand/domain/repositories/brand_repo_interface.dart';
+import 'package:mstore/utill/app_constants.dart';
 
-class BrandRepository implements BrandRepoInterface{
+class BrandRepository implements BrandRepoInterface {
   final DioClient? dioClient;
   BrandRepository({required this.dioClient});
 
@@ -21,7 +21,8 @@ class BrandRepository implements BrandRepoInterface{
   @override
   Future<ApiResponse> getSellerWiseBrandList(int sellerId) async {
     try {
-      final response = await dioClient!.get('${AppConstants.sellerWiseBrandList}$sellerId');
+      final response =
+          await dioClient!.get('${AppConstants.sellerWiseBrandList}$sellerId');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -45,8 +46,6 @@ class BrandRepository implements BrandRepoInterface{
     // TODO: implement get
     throw UnimplementedError();
   }
-
-
 
   @override
   Future update(Map<String, dynamic> body, int id) {

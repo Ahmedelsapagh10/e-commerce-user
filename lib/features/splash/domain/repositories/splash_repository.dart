@@ -1,11 +1,11 @@
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/dio/dio_client.dart';
-import 'package:flutter_sixvalley_ecommerce/data/datasource/remote/exception/api_error_handler.dart';
-import 'package:flutter_sixvalley_ecommerce/data/model/api_response.dart';
-import 'package:flutter_sixvalley_ecommerce/features/splash/domain/repositories/splash_repository_interface.dart';
-import 'package:flutter_sixvalley_ecommerce/utill/app_constants.dart';
+import 'package:mstore/data/datasource/remote/dio/dio_client.dart';
+import 'package:mstore/data/datasource/remote/exception/api_error_handler.dart';
+import 'package:mstore/data/model/api_response.dart';
+import 'package:mstore/features/splash/domain/repositories/splash_repository_interface.dart';
+import 'package:mstore/utill/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashRepository implements SplashRepositoryInterface{
+class SplashRepository implements SplashRepositoryInterface {
   final DioClient? dioClient;
   final SharedPreferences? sharedPreferences;
   SplashRepository({required this.dioClient, required this.sharedPreferences});
@@ -20,15 +20,12 @@ class SplashRepository implements SplashRepositoryInterface{
     }
   }
 
-
-
-
   @override
   void initSharedData() async {
     if (!sharedPreferences!.containsKey(AppConstants.intro)) {
       sharedPreferences!.setBool(AppConstants.intro, true);
     }
-    if(!sharedPreferences!.containsKey(AppConstants.currency)) {
+    if (!sharedPreferences!.containsKey(AppConstants.currency)) {
       sharedPreferences!.setString(AppConstants.currency, '');
     }
   }
@@ -82,8 +79,4 @@ class SplashRepository implements SplashRepositoryInterface{
     // TODO: implement update
     throw UnimplementedError();
   }
-
-
-
-
 }
